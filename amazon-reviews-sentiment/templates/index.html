@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="shortcut icon" href="./assets/img/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/creativetimofficial/tailwind-starter-kit/compiled-tailwind.min.css" />
+  <title>Amazon Device Reviews Analysis</title>
+</head>
+
+<body class="text-gray-800 antialiased">
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+
+  <main>
+    <div class="relative pt-16 pb-32 flex content-center items-center justify-center" style="min-height: 35vh;">
+      <div class="absolute top-0 w-full h-full bg-center bg-cover"
+        style='background-color: #146eb4;'>
+        <span id="blackOverlay" class="w-full h-full absolute opacity-50 "></span>
+      </div>
+      <div class="container relative mx-auto">
+        <div class="items-center flex flex-wrap">
+          <div class="w-full lg:w-5/12 px-4 ml-auto mr-auto text-center">
+            <div class="pr-12 w-50">
+                      <!-- Logo Image -->
+              <div class="mb-6">
+                <img src="{{ url_for('static', filename='amazon-logo.png') }}"
+                alt="Amazon Devices Logo" 
+                class="mx-auto w-20 h-auto"
+                style="width: 300px !important; height: auto !important;">
+              </div>
+              <h1 class="text-white font-semibold text-1.5xl border-gray-600">
+                Unlock the Voice of Your Customers on Amazon Devices
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
+        style="height: 70px;">
+        <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+          version="1.1" viewBox="0 0 2560 100" x="0" y="0">
+          <polygon class="text-gray-300 fill-current" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </div>
+
+    <section class="relative py-20">
+      <div class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
+        style="height: 80px;">
+        <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+          version="1.1" viewBox="0 0 2560 100" x="0" y="0">
+          <polygon class="text-white fill-current" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+
+      <div class="container mx-auto px-4 py-24 pt-12">
+
+        <!-- Titles Alignment -->
+        <div class="flex justify-between items-center mb-8">
+          <h1 class="text-4xl font-semibold text-center w-full md:w-6/12" >
+            Single Review Prediction
+          </h1>
+          <h1 class="text-4xl font-semibold text-center w-full md:w-6/12">
+            Multiple Review Predictions
+          </h1>
+        </div>
+      
+        <div class="flex flex-wrap justify-between gap-8">
+          <!-- Single Review Prediction -->
+          <div class="bg-white rounded-lg p-6 flex flex-col w-full md:w-6/12">
+            <!-- Form -->
+            <form id="singleReviewForm" class="w-full max-w-lg">
+              <!-- Text Input -->
+              <div class="pt-4">
+                <label for="textInput" class="block text-sm font-medium text-gray-600 mb-2">
+                  Single Review for Prediction
+                </label>
+                <textarea
+                  class="text-md block px-3 py-2 rounded-lg w-full 
+                  bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
+                  id="textInput" placeholder="Enter review..." style="height: 60px;"></textarea>
+              </div>
+        
+              <!-- Button -->
+              <div class="flex justify-center pt-8">
+                <button type="button" onclick="predictSingleReview()" class="text-lg font-semibold bg-gray-800 text-white rounded-lg px-6 py-3 shadow-xl hover:bg-black"
+                style="background-color: #FF9900;">
+                  Predict
+                </button>
+              </div>
+            </form>
+        
+            <!-- Prediction Result -->
+            <div class="mt-8 w-full max-w-lg" id = "singlePredictionResultLabel" style="display: none;">
+              <h2 class="text-2xl font-semibold text-left">Prediction Result</h2>
+              <div class="p-4 border mt-4">
+                <div id="singlePredictionResult"></div>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Multiple Review Prediction -->
+          <div class="bg-white rounded-lg p-6 flex flex-col w-full md:w-6/12">
+            <!-- Form -->
+            <form id="multipleReviewForm" class="w-full max-w-lg">
+              <!-- File Input -->
+              <div class="pt-4">
+                <label for="fileInput" class="block text-sm font-medium text-gray-600 mb-2">
+                  Upload CSV File
+                </label>
+                <input type="file" id="fileInput" accept=".csv"
+                  class="text-md block px-3 py-2 rounded-lg w-full
+                    bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none" 
+                    style="height: 60px;">
+              </div>
+        
+              <!-- Button -->
+              <div class="flex justify-center pt-8">
+                <button type="button" onclick="predictMultipleReviews()" class="text-lg font-semibold bg-gray-800 text-white rounded-lg px-6 py-3 shadow-xl hover:bg-black"
+                style="background-color: #FF9900;">
+                  Predict
+                </button>
+              </div>
+            </form>
+        
+            <!-- Graph Results -->
+            <div class="mt-8 w-full max-w-lg" id="graphResult" style="display: none;">
+              <h2 class="text-2xl font-semibold text-left">Graph Results</h2>
+              <div class="p-4 m-2 border  ">
+                <div id="graphContainer"></div>
+              </div>
+            </div>
+        
+            <!-- Download Button -->
+            <div class="flex justify-center mt-8 w-full max-w-lg">
+              <button id="downloadBtn" style="display:none" onclick="downloadPredictions()" class="text-md font-semibold bg-gray-800 text-white rounded-lg px-6 py-3 shadow-xl hover:bg-black"
+              style="background-color: #FF9900;">
+                Download Results
+              </button>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </section>
+
+
+
+  </main>
+  <footer class="relative bg-gray-900 pt-8 pb-6">
+    <div class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
+      style="height: 80px;">
+      <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+        version="1.1" viewBox="0 0 2560 100" x="0" y="0">
+        <polygon class="text-gray-300 fill-current" points="2560 0 2560 100 0 100"></polygon>
+      </svg>
+    </div>
+    <div class="container mx-auto px-4">
+
+      <hr class="my-6 border-gray-400" />
+      <div class="flex flex-wrap items-center md:justify-between justify-center">
+        <div class="w-full md:w-4/12 px-4 mx-auto text-center">
+          <div class="text-sm text-white font-semibold py-1">
+            Copyright © Vy Tran 2024
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+<script>
+
+  
+  function predictSingleReview() {
+
+  // Get the text input and prediction result elements
+  var textInput = document.getElementById("textInput");
+  var singleResult = document.getElementById("singlePredictionResult");
+  var singlePredictionResultLabel = document.getElementById("singlePredictionResultLabel");
+  var downloadBtn = document.getElementById("downloadBtn");
+  var graphResult = document.getElementById("graphResult");
+
+  // Log the input value for debugging
+  console.log("Input Text for Single Review Prediction:", textInput.value.trim());
+
+  // Check if the text input is not empty
+  if (textInput.value.trim() !== "") {
+    fetch("http://127.0.0.1:5000/predict", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ "text": textInput.value.trim() })
+    })
+        .then(response => {
+
+          // Log the response status and headers
+          console.log("Response Status:", response.status);
+          console.log("Response Headers:", response.headers);
+
+          if (!response.ok) {
+            throw new Error("Network response was not ok. Status: " + response.status);
+          }
+
+          return response.json();
+        })
+      .then(data => {
+
+        // Log the response data for debugging
+        console.log("Response Data for Single Prediction:", data);
+
+        downloadBtn.style.display = "none";
+        graphResult.style.display = "none";
+        singlePredictionResultLabel.style.display = "block";
+        // Display the prediction result
+        singleResult.innerHTML = "" + data.prediction;
+
+      })
+      .catch(error => {
+        // Log any errors
+          alert("Error in Single Review Prediction");
+          console.error("Error in Single Review Prediction:", error);
+      });
+  } else {
+    alert("Please enter text for prediction.");
+    console.warn("No input provided for single review prediction.");
+  }
+}
+
+function predictMultipleReviews() {
+  // Get the file input and download button elements
+  var fileInput = document.getElementById("fileInput");
+  var downloadBtn = document.getElementById("downloadBtn");
+  var graphContainer = document.getElementById("graphContainer");
+  var graphResult = document.getElementById("graphResult");
+  var singlePredictionResultLabel = document.getElementById("singlePredictionResultLabel");
+
+
+  // Check if a file is selected
+  if (fileInput.files.length > 0) {
+
+    console.log("Selected File for Multiple Review Prediction:", fileInput.files[0].name);
+
+    var formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    // Send the file to the backend using fetch
+    fetch("http://127.0.0.1:5000/predict", {
+      method: "POST",
+      body: formData
+    })
+        .then(response => {
+
+          console.log("Response Object:", response);
+          // Check and log the response headers
+          console.log("Response Headers:", response.headers);
+
+          const graphExists = response.headers.get('X-Graph-Exists');
+          if (graphExists && graphExists === 'true') {
+            console.log("Graph exists");
+            var graphData = response.headers.get('X-Graph-Data');
+            displayGraph(graphData);
+          } else {
+            console.log("No graph data in response.");
+          }
+
+          return response.blob();   // Ensure response is processed as blob afterward
+        })
+      
+      // Handle blob 
+      .then(blob => {
+
+        // Log the blob object for debugging
+        console.log("Blob Data for Multiple Predictions:", blob);
+
+        // Show and set up the download button and graph result
+        downloadBtn.style.display = "block";
+        graphResult.style.display = "block";
+        singlePredictionResultLabel.style.display = "none";
+
+        downloadBtn.onclick = function () {
+          console.log("Downloading...");
+          var url = URL.createObjectURL(blob);
+          console.log("Download URL:", url);
+
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = "Predictions.csv";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+      })
+      .catch(error => {
+        // Log any errors
+        console.error("Error in Multiple Review Prediction:", error);
+          alert("An error occurred during file upload: ", error.text);
+      });
+  } else {
+    console.warn("No file selected for multiple review prediction.");
+    alert("Please upload a file for prediction.");
+  }
+}
+
+
+function downloadPredictions() {
+  console.log("Download prediction");
+}
+
+function displayGraph(graphData) {
+    var singleResult = document.getElementById("singlePredictionResult");
+    var graphContainer = document.getElementById("graphContainer");
+
+    // Clear previous graph and result
+    singleResult.innerHTML = "";
+    graphContainer.innerHTML = "";
+    var graphUrl = "data:image/png;base64," + graphData;
+    var img = document.createElement('img');
+    img.src = graphUrl;
+    graphContainer.appendChild(img);
+  }
+
+</script>
+
+</html>

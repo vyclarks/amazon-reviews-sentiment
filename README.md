@@ -3,7 +3,7 @@
 This project deploys a sentiment analysis model that predicts customer sentiment in real-time. It provides a Flask-based API and a web interface for users to input reviews or upload CSV files for batch predictions.
 
 ## 1) Features
-
+- Data Scraping: Scraped 15k review from Amazon Website using BeautifulSoup and Selenium
 - Text Preprocessing: Automatically cleans and preprocesses text data.
 - Sentiment Prediction: Classifies reviews as positive, neutral, or negative using a trained LightGBM model.
 - Graph Visualization: Displays sentiment distribution graphs.
@@ -28,20 +28,35 @@ amazon-reviews-sentiment/
 │   └── exploratory_data_analysis.ipynb
 
 ├── 4-model_development/
+
 │   └── model_development.ipynb
+
 ├── 5-model_deployment/
+
 │   ├── __pycache__/
+
 │   └── README.md
+
 ├── data/
+
 ├── docs/
+
 ├── models/
+
 ├── requirements.txt
+
 ├── static/
+
 │   └── amazon-logo.png
+
 ├── templates/
+
 │   └── index.html
+
 ├── api.py
+
 ├── main.py
+
 └── text_preprocessing.py
 
 ### Details

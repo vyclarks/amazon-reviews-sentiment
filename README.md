@@ -14,12 +14,19 @@ This project deploys a sentiment analysis model that predicts customer sentiment
 ## 2) Project Structure
 
 amazon-reviews-sentiment/
+
 ├── 1-data_collection/
+
 │   └── amazon_scraping.ipynb
+
 ├── 2-data_preprocessing/
+
 │   └── data_preprocessing.ipynb
+
 ├── 3-exploratory_data_analysis/
+
 │   └── exploratory_data_analysis.ipynb
+
 ├── 4-model_development/
 │   └── model_development.ipynb
 ├── 5-model_deployment/
